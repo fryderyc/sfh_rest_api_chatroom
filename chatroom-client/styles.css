@@ -1,0 +1,66 @@
+/* Center the chat window and make it take up 80% of the viewport */
+#message-form {
+  margin: 0 auto;
+  width: 80%;
+}
+
+/* Style the chat messages */
+.message {
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* Style the chat message sender and timestamp */
+.message .sender {
+  font-weight: bold;
+  color: #333;
+  margin-right: 5px;
+}
+
+.message .timestamp {
+  font-style: italic;
+  color: #999;
+}
+
+#name-input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-top: 1px solid #ddd;
+  font-size: 16px;
+}
+
+/* Style the chat input box */
+#message-input {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border: none;
+  border-top: 1px solid #ddd;
+  font-size: 16px;
+}
+
+/* Style the chat input submit button */
+#chat-submit {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Style the error message */
+#error {
+  color: red;
+  font-weight: bold;
+}
+
+
+li {
+  list-style: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

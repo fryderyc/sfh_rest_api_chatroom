@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chatroom</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+    <script>
+        const socket = io('http://localhost:3000');
+        document.addEventListener('DOMContentLoaded', () => {
+            // handler for 'chat history' event
+            socket.on('chat history', () => {
+                const chatBox = document.getElementById('chat-box');
+                chatBox.innerHTML = '';
+
+                fetch("http://localhost:3000/messages")
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        data.forEach((msg) => {
+                            const li = document.createElement('li');
+                            li.textContent = `${msg.name}: ${msg.message}`;
+                            chatBox.appendChild(li);
+                        });
+                    })
+            });
+
+            // handler for 'chat message' event
+            socket.on('chat message', () => {
+                const li = document.createElement('li');
+                const chatBox = document.getElementById('chat-box');
+                fetch("http://localhost:3000/latest-message")
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        li.textContent = `${data.name}: ${data.message}`;
+                        chatBox.appendChild(li);
+                    });
+            });
+
+            // send message to server on form submission
+            const form = document.getElementById('message-form');
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const input = document.getElementById('message-input');
+                const name = document.getElementById('name-input');
+                const message = input.value.trim();
+                if (message) {
+                    socket.emit('chat message');
+                    fetch("http://localhost:3000/messages", {
+                            method: 'POST', 
+                            body: JSON.stringify({ name: name.value, message }),
+                            headers: { 'Content-Type': 'application/json' }
+                        })
+                        .then(response => response.json())
+                        .then(data => console.log(data));
+                    input.value = '';
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Chatroom</h1>
+    <form id="message-form">
+        <ul id="chat-box" class="message"></ul>
+        <label for="name-input">Name:</label>
+        <input type="text" id="name-input" class="message sender" required>
+        <label for="message-input">Message:</label>
+        <textarea id="message-input" required></textarea>
+        <button type="submit" id="chat-submit">Send</button>
+    </form>
+</body>
+
+</html>
